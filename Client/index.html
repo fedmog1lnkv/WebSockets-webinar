@@ -1,73 +1,46 @@
 <!-- Форма ввода сообщения и отображение сообщений -->
+<!-- <div id="messages"></div>
+
 <form id="send-form">
-    <input type="text" id="message-input" />
+    <input type="text" id="message-input" placeholder="Type your message here" />
     <button type="submit">Send</button>
-    <button onclick="clearChat()">Clear Chat</button>
-</form>
+    <button type="button" onclick="clearChat()">Clear Chat</button>
+</form> -->
+<!DOCTYPE html>
+<html lang="en">
 
-<div id="messages"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/chatbox.css">
+</head>
 
-<!-- Открываем всплывающее окно с формой ввода имени -->
-<script>
-    // Открываем всплывающее окно с формой ввода имени
-    window.onload = function () {
-        if (!localStorage.getItem('username')) {
-            var username = prompt("Please enter your name:");
-            if (username != null) {
-                setUsername(username);
-            }
-        }
-    }
+<body>
 
-    function setUsername(username) {
-        localStorage.setItem('username', username);
-    }
+    <!-- 
+    ex. in
+    <div class="container">
+        <p>Hello. How are you today?</p>
+        <span class="name-right">11:00</span>
+    </div>
 
-    // Форма ввода сообщения и отображение сообщений
-    // var socket = new WebSocket('ws://158.160.26.1:8080/ws');
-    var socket = new WebSocket('wss://localhost:44376/ws');
+    ex. out
+    <div class="container darker">
+        <p>Hey! I'm fine. Thanks for asking!</p>
+        <span class="name-left">11:01</span>
+    </div> -->
 
-    socket.onopen = function (event) {
-        console.log("WebSocket connected.");
-    };
+    <div id="messages"></div>
 
-    socket.onmessage = function (event) {
-        console.log("Received message:", event.data);
+    <form id="send-form">
+        <input type="text" id="message-input" placeholder="Type your message here" />
+        <button type="submit">Send</button>
+        <button type="button" onclick="clearChat()">Clear Chat</button>
+    </form>
+    <!-- Открываем всплывающее окно с формой ввода имени -->
+    <script src="scripts/main.js"></script>
+</body>
 
-        // Если получено сообщение "@$/clear", то очищаем чат
-        if (event.data === "@$/clear") {
-            document.getElementById("messages").innerHTML = "";
-            return;
-        }
-
-        var messages = document.getElementById("messages");
-        messages.innerHTML += event.data + "<br/>";
-    };
-
-    var form = document.getElementById("send-form");
-
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        var input = document.getElementById("message-input");
-        var message = input.value;
-        var username = localStorage.getItem('username'); // получаем имя пользователя из localstorage
-
-        if (message) {
-            socket.send(username + ': ' + message); // отправляем сообщение со значением из localstorage
-            input.value = "";
-        }
-    });
-
-
-    function clearChat() {
-        var requestOptions = {
-            method: 'DELETE',
-            redirect: 'follow'
-        };
-
-        fetch("https://localhost:44376/chat/clear", requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
-    }
-</script>
+</html>

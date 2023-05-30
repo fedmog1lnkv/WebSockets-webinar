@@ -1,0 +1,94 @@
+/* ChatBox container */
+#messages {
+    height: 45vw;
+    overflow-y: scroll;
+}
+
+/* Send form */
+#send-form {
+    display: flex;
+    align-items: center;
+    height: 5vw;
+    margin-top: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 1.2em;
+}
+
+button[type="submit"],
+button[type="button"] {
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* Chat containers */
+.container {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    font-size: 1.2em;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+/* Darker chat container */
+.darker {
+    border-color: #ccc;
+    background-color: #ddd;
+    text-align: right;
+    font-size: 1.2em;
+}
+
+/* Clear floats */
+.container::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Style name text */
+.name-right {
+    float: right;
+    color: #aaa;
+    font-size: 0.9em;
+}
+
+.name-left {
+    float: left;
+    color: #999;
+    font-size: 0.9em;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    #messages {
+        height: auto;
+    }
+
+    .container,
+    .darker {
+        width: 90%;
+        margin: 10px auto;
+        font-size: 1.1em;
+    }
+
+    button[type="submit"],
+    button[type="button"] {
+        font-size: 0.8em;
+        padding: 7px;
+        margin-left: 5px;
+    }
+}
