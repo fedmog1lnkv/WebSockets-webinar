@@ -1,0 +1,73 @@
+<!-- Форма ввода сообщения и отображение сообщений -->
+<form id="send-form">
+    <input type="text" id="message-input" />
+    <button type="submit">Send</button>
+    <button onclick="clearChat()">Clear Chat</button>
+</form>
+
+<div id="messages"></div>
+
+<!-- Открываем всплывающее окно с формой ввода имени -->
+<script>
+    // Открываем всплывающее окно с формой ввода имени
+    window.onload = function () {
+        if (!localStorage.getItem('username')) {
+            var username = prompt("Please enter your name:");
+            if (username != null) {
+                setUsername(username);
+            }
+        }
+    }
+
+    function setUsername(username) {
+        localStorage.setItem('username', username);
+    }
+
+    // Форма ввода сообщения и отображение сообщений
+    // var socket = new WebSocket('ws://158.160.26.1:8080/ws');
+    var socket = new WebSocket('wss://localhost:44376/ws');
+
+    socket.onopen = function (event) {
+        console.log("WebSocket connected.");
+    };
+
+    socket.onmessage = function (event) {
+        console.log("Received message:", event.data);
+
+        // Если получено сообщение "@$/clear", то очищаем чат
+        if (event.data === "@$/clear") {
+            document.getElementById("messages").innerHTML = "";
+            return;
+        }
+
+        var messages = document.getElementById("messages");
+        messages.innerHTML += event.data + "<br/>";
+    };
+
+    var form = document.getElementById("send-form");
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var input = document.getElementById("message-input");
+        var message = input.value;
+        var username = localStorage.getItem('username'); // получаем имя пользователя из localstorage
+
+        if (message) {
+            socket.send(username + ': ' + message); // отправляем сообщение со значением из localstorage
+            input.value = "";
+        }
+    });
+
+
+    function clearChat() {
+        var requestOptions = {
+            method: 'DELETE',
+            redirect: 'follow'
+        };
+
+        fetch("https://localhost:44376/chat/clear", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+    }
+</script>
