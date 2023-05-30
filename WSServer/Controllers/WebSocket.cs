@@ -63,4 +63,18 @@ public class WebSocketController : Controller
                 CancellationToken.None);
         }
     }
+    
+    public static async Task ClearChat()
+    {
+        _messages.Clear();
+        var clearMessage = Encoding.UTF8.GetBytes("@$/clear");
+        foreach (var socket in _sockets)
+        {
+            if (socket.State == WebSocketState.Open)
+            {
+                await socket.SendAsync(new ArraySegment<byte>(clearMessage, 0, clearMessage.Length),
+                    WebSocketMessageType.Text, true, CancellationToken.None);
+            }
+        }
+    }
 }
