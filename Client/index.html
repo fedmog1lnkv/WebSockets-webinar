@@ -24,14 +24,17 @@
         <span class="name-left">11:01</span>
     </div> -->
 
+    <!-- Chatbox container -->
     <div id="messages"></div>
 
+    <!-- Form for sending messages -->
     <form id="send-form">
         <input type="text" id="message-input" placeholder="Type your message here" />
         <button type="submit">Send</button>
         <button type="button" onclick="clearChat()">Clear Chat</button>
     </form>
-    <!-- Открываем всплывающее окно с формой ввода имени -->
+
+    <!-- Popup window for entering a name -->
     <script src="scripts/display-messages.js"></script>
     <script src="scripts/main.js"></script>
     <script src="websocket.js"></script>
